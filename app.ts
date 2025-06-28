@@ -1,10 +1,13 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction, Application } from "express";
+import dotenv from "dotenv";
+
 import mongoose, { Document, Schema } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
+dotenv.config();
 
-const app = express();
+const app: Application = express();
 
 // Type definitions
 interface ILink extends Document {
@@ -475,16 +478,11 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 //   res.status(404).json({ error: "Endpoint not found" });
 // });
 
-const URL =
-  "mongodb+srv://salamikhalil02:salamikhalil02@cluster0.uk7kdht.mongodb.net/";
-
 // Database connection and server startup
 const connectDB = async (): Promise<void> => {
   try {
     await mongoose.connect(
-      process.env.MONGO_URL ||
-        URL ||
-        "mongodb://localhost:27017/anonymous-messages",
+      process.env.MONGO_URL || "mongodb://localhost:27017/anonymous-messages",
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
